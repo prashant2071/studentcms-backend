@@ -1,0 +1,36 @@
+{% extends "base.html"%} 
+{% block header %} Add students {% endblock %} 
+
+{% block content %}
+<section class="registration-section">
+<div class="registration-form">
+    {% if success == 'True' %}
+    <h4 style="color:rgb(5, 82, 165);">{{message}}</h4>
+    {% else %}
+    <h4 style="color:red;">{{message}}</h4> 
+    {% endif %}
+    
+<br/>
+    <h2>User Registration</h2>
+    <form action="{% url 'student-add'%}" method="post">
+        {% csrf_token %}
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+        <button type="submit">Add student</button>
+    </form>
+</div>
+</section>
+{% endblock %}

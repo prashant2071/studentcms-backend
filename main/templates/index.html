@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+{% block header %} Welcome to our school {% endblock %} 
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total Courses</td>
+      <td>{{total_course}}</td>
+    </tr>
+    <tr>
+      <td>Total Students</td>
+      <td>{{total_student}}</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
+<!-- </main> -->

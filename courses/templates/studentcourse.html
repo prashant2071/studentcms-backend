@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Student Courses</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student_course in student_courses %}
+                        <tr>
+                            <td>{{ student_course.student__first_name }}</td>
+                            <td>{{ student_course.course__course_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Assignment Form</h2>
+            <form method="post" action="{% url 'student-course' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="studentDropdown" class="form-label">Select Student</label>
+                    <select class="form-select" id="studentDropdown" name="student">
+                        {% for student in students %}
+                            <option value="{{ student.id }}">{{ student.first_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="courseDropdown" class="form-label">Select Course</label>
+                    <select class="form-select" id="courseDropdown" name="course">
+                        {% for course in courses %}
+                            <option value="{{ course.id }}">{{ course.course_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Assign Course</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
