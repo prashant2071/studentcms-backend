@@ -11,6 +11,7 @@ class Course(models.Model):
     instructor_name = models.CharField(max_length=255)
     course_fee = models.IntegerField()
     start_date = models.DateField(null=True)
+    is_deleted = models.BooleanField(default = False) 
 
     def __str__(self):
         return self.course_name

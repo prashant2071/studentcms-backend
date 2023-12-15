@@ -12,6 +12,7 @@
       <th>Instructor Name</th>
       <th>Course Fee</th>
       <th>Start Date</th>
+      <th>Is Active</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,10 @@
       <td>{{course.instructor_name}}</td>
       <td>{{course.course_fee}}</td>
       <td>{{course.start_date}}</td>
+      {% if course.is_deleted == False %}
+      <td>Active</td>
+      {% endif %}
+
     </tr>
     {% endfor %}
   </tbody>

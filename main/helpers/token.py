@@ -15,6 +15,7 @@ def encode(payload):
 
 def decode(token):
     try:
+        print("at encoder============== PAYLOAD IS", token)
         decoded = jwt.decode(token,
         settings.JWT_SECRET,
         algorithms = settings.JWT_ALGORITHM

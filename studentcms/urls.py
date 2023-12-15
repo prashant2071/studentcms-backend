@@ -24,13 +24,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',HomeView,name='home'),
     
-    path('api/token/',getToken),
     path('students/',include('accounts.urls')),
     path('courses/',include('courses.urls')),
 
 # for api
+    path('api/token/',getToken),
     path('api/',include('main.api_urls')),
     path('api/students/',include('accounts.api_urls')),
     path('api/courses/',include('courses.api_urls')),
+
+# for api_v1
+    path('api/v1/',include('courses.api_v1_urls')),
+    path('api/v1/',include('accounts.api_v1_urls'))
 
 ]

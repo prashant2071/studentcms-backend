@@ -36,6 +36,7 @@ def HomeView(request):
 @csrf_exempt
 def getToken(request):
     data = json.loads(request.body)
+    print(data)
     p = Profile.objects.filter(
         email = data['email'],
         password = data['password']

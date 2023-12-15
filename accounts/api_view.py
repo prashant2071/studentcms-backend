@@ -8,7 +8,9 @@ import json
 @csrf_exempt
 def StudentAPiView (request ,id=None):
     output = {"data":None,"message":""}
+    print("======================token============")
     token = request.META['HTTP_AUTHORIZATION']
+    print("the decoded is ",token)
     decoded = decode(token)
     if decoded == False:
         output["message"] = "Unauthorized"
@@ -16,7 +18,10 @@ def StudentAPiView (request ,id=None):
     method = request.method
     if method =="GET":
         if id is None:
-         p = list(Profile.objects.filter().values("id","first_name"))
+         print("========================= GET ================")
+        #  p = list(Profile.objects.filter().values("id","first_name"))
+         p = list(Profile.objects.filter().values("id","first_name","last_name","email","password","phone"))
+         print(p)
          output["data"] = p
          output["message"] = "data fetched successfully"
         else:
@@ -27,13 +32,13 @@ def StudentAPiView (request ,id=None):
          }
     elif method == "POST":
         data = json.loads(request.body)
-        print("json converted data")
+        print("json converted data from react",data)
         # for form data
         # data = request.POST
         profile_data = {
             "first_name":data["first_name"],
             "last_name":data["last_name"],
-            'email':data['email'],
+            "email":data["email"],
             'password':data['password'],
             'phone':data['phone'],  
         }
@@ -43,21 +48,26 @@ def StudentAPiView (request ,id=None):
         else : 
             p = Profile(**profile_data)
             p.save()
+            output["data"] = list(Profile.objects.filter().values("id","first_name","last_name","email","password","phone"))
             output['message'] =f"{profile_data['first_name']} Added successfully "
 
     elif method == "PATCH":
         print("----------- patch method ------------------")
         data = json.loads(request.body)
+        print("the data is",data,"the id is",id)
         p=Profile.objects.filter(id=id)
+        print("the data of p is",p)
         if not p:
             output["message"] = f"student {id} not found"
         else:
             data_to_update={}
-            feilds=['first_name',"last_name","phone",]
+            feilds=['first_name',"last_name","phone","email","password",]
             for feild in feilds:
+                print(data.get(feild))
                 if data.get(feild):
                     data_to_update[feild] = data.get(feild)
             p.update(**data_to_update)
+            output["data"] = list(Profile.objects.filter().values("id","first_name","last_name","email","password","phone"))
             output["message"] = "data updated successfully"
         # data = request.POST
         # p = Profile.objects.filter(id=id)
@@ -70,14 +80,12 @@ def StudentAPiView (request ,id=None):
         if id :
             try:
               p = Profile.objects.get(id=id)
-              print(p)
+              print(f"the id is {id}",p)
+            #   output["data"] =  p
               p.delete()
-              output["data"] = p
               output["message"] = "data delete successfully"
             except Exception as e:
-              output["message"] = f"{e}"
-            else:
-                output["message"] = "no user found"
+              output["message"] = f"failed to delete data {e} "
         else:
             output["message"] = "Please provide user id"
  

@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Create your views here.
 def ListCourseView(request):
-    courses=Course.objects.all()
+    courses=Course.objects.filter(is_deleted = False)
     return render (request,"courses.html",{"courses":courses})
 
 def AddCourse (request):
