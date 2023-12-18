@@ -4,8 +4,11 @@ from accounts.viewsets import ProfileViewSet
 
 
 router = routers.DefaultRouter()
-router.register(r'',ProfileViewSet)
+router.register(r'',ProfileViewSet,basename='profile')
+
+
 
 urlpatterns = [    
-    path('profile',include(router.urls))
+    path('',include(router.urls)),
+
 ]

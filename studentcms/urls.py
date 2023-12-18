@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/courses/',include('courses.api_urls')),
 
 # for api_v1
-    path('api/v1/',include('courses.api_v1_urls')),
-    path('api/v1/',include('accounts.api_v1_urls'))
+    path('api/v1/students/',include('accounts.api_v1_urls')),
+    path('api/v1/courses/',include('courses.api_v1_urls')),
 
 ]

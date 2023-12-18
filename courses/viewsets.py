@@ -1,13 +1,13 @@
-from rest_framework import viewsets,serializers
+from rest_framework import viewsets
 from rest_framework.response import Response 
 from courses.models import Course,StudentCourse
-from courses.serializer import CourseSerializer
+from courses.serializer import CourseSerializer,StudentCourseSerializer
  
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     
-    def list(self, request, *args, **kwargs):
+    def list(self, request):
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
@@ -17,14 +17,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         data = serializer.data
-        data.append({"message":"this is pagination"})
         return Response(data)
 
-class StudentCourseSerializer(serializers.ModelSerializer):
+    
+class StudentCourseViewSet(viewsets.ModelViewSet):
+    serializer_class =  StudentCourseSerializer
+    queryset = StudentCourse.objects.all()
 
-    student = serializers.StringRelatedField(source='student.first_name')
-    course = serializers.StringRelatedField(source='course.name')
-
-    class Meta:
-        model = StudentCourse
-        fields = ['id', 'student', 'course']
