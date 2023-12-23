@@ -1,3 +1,6 @@
+from datetime import timedelta
+import redis
+
 """
 Django settings for studentcms project.
 
@@ -41,9 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'drf_yasg',
     'accounts',
     'courses',
-    'main'
+    'main',
+    'userauth',
     
 ]
 
@@ -173,6 +178,51 @@ JWT_SECRET = "randomsecret##!1"
 JWT_ALGORITHM = 'HS256'
 
 REST_FRAMEWORK = {
+        'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/minute',
+        'user': '10/hour'
+    },
+        'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': {
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1200),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    
+}
+AUTH_USER_MODEL = 'userauth.User'
+
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+
+REDIS_CLIENT = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}",
+    }
+}
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
+
+UPLOAD_PATH = 'uploads'
+UPLOAD_TEMP_PATH = 'temp_uploads'
